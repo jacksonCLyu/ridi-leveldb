@@ -54,7 +54,7 @@ func (r *cacheResult) call(f newDB, path, dbName string, options *opt.Options) {
 	close(r.ready)
 }
 
-func (r *cacheResult) deliver(dbChan chan *underlineDB) {
+func (r *cacheResult) deliver(dbChan chan *UnderlineDB) {
 	<-r.ready
 	dbChan <- r.underlineDB
 }

@@ -6,17 +6,17 @@ import (
 )
 
 // GetDB The entrance of get db request by default home dir
-func GetDB(dbName string) *underlineDB {
+func GetDB(dbName string) *UnderlineDB {
 	return GetDBWithPathAndOpts(env.AppRootPath(), dbName, &opt.Options{})
 }
 
 // GetDBWithOpts The entrance of get db request by default home dir and *opt.Options
-func GetDBWithOpts(dbName string, opts *opt.Options) *underlineDB {
+func GetDBWithOpts(dbName string, opts *opt.Options) *UnderlineDB {
 	return GetDBWithPathAndOpts(env.AppRootPath(), dbName, opts)
 }
 
 // GetDBWithPathAndOpts The entrance of get db request
-func GetDBWithPathAndOpts(path string, dbName string, opts *opt.Options) *underlineDB {
+func GetDBWithPathAndOpts(path string, dbName string, opts *opt.Options) *UnderlineDB {
 	if "" == dbName {
 		return nil
 	}
@@ -24,7 +24,7 @@ func GetDBWithPathAndOpts(path string, dbName string, opts *opt.Options) *underl
 		Path:   path,
 		DbName: dbName,
 		Opts:   opts,
-		DbChan: make(chan *underlineDB),
+		DbChan: make(chan *UnderlineDB),
 	}
 	dbMemo.DbReqs <- dbReq
 	return <-dbReq.DbChan

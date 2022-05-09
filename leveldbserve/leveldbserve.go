@@ -26,23 +26,23 @@ func init() {
 }
 
 // Close To close the opened leveldb
-func (db *underlineDB) Close() error {
+func (db *UnderlineDB) Close() error {
 	return db.background.Close()
 }
 
 // createDB create a db instance realtime
-func createDB(path string, dbName string, options *opt.Options) (db *underlineDB, err error) {
+func createDB(path string, dbName string, options *opt.Options) (db *UnderlineDB, err error) {
 	defer rescueutil.Recover(func(e any) {
 		err = e.(error)
 	})
 	dbFileName := filepath.Join(path, DbRelativePath, dbName)
 	ldb := assignutil.Assign(leveldb.OpenFile(dbFileName, options))
-	db = &underlineDB{background: ldb}
+	db = &UnderlineDB{background: ldb}
 	return
 }
 
 // Get get value from db by key
-func (db *underlineDB) Get(key string) (value []byte) {
+func (db *UnderlineDB) Get(key string) (value []byte) {
 	defer rescueutil.Recover(func(err any) {
 		fmt.Printf("Get Error: %v\n", err)
 		value = nil
@@ -52,7 +52,7 @@ func (db *underlineDB) Get(key string) (value []byte) {
 }
 
 // Put put (k, v) into db
-func (db *underlineDB) Put(key string, val interface{}) (err error) {
+func (db *UnderlineDB) Put(key string, val interface{}) (err error) {
 	defer rescueutil.Recover(func(e any) {
 		err = e.(error)
 	})
@@ -62,7 +62,7 @@ func (db *underlineDB) Put(key string, val interface{}) (err error) {
 }
 
 // PutBatch batch put to db
-func (db *underlineDB) PutBatch(rsMap map[string]interface{}) (err error) {
+func (db *UnderlineDB) PutBatch(rsMap map[string]interface{}) (err error) {
 	defer rescueutil.Recover(func(e any) {
 		err = e.(error)
 	})
@@ -78,7 +78,7 @@ func (db *underlineDB) PutBatch(rsMap map[string]interface{}) (err error) {
 }
 
 // DeleteBatch batch delete
-func (db *underlineDB) DeleteBatch(keys ...string) (err error) {
+func (db *UnderlineDB) DeleteBatch(keys ...string) (err error) {
 	defer rescueutil.Recover(func(e any) {
 		err = e.(error)
 	})
@@ -93,7 +93,7 @@ func (db *underlineDB) DeleteBatch(keys ...string) (err error) {
 }
 
 // ForRange traverse
-func (db *underlineDB) ForRange(applyFunc func(k string, v []byte)) {
+func (db *UnderlineDB) ForRange(applyFunc func(k string, v []byte)) {
 	defer rescueutil.Recover(func(e any) {
 		fmt.Printf("ForRange Error: %v\n", e)
 	})
@@ -110,7 +110,7 @@ func (db *underlineDB) ForRange(applyFunc func(k string, v []byte)) {
 }
 
 // ForRangeAsync traverse
-func (db *underlineDB) ForRangeAsync(applyFunc func(k string, v []byte)) {
+func (db *UnderlineDB) ForRangeAsync(applyFunc func(k string, v []byte)) {
 	defer rescueutil.Recover(func(e any) {
 		fmt.Printf("ForRangeAsync Error: %v\n", e)
 	})
@@ -125,7 +125,7 @@ func (db *underlineDB) ForRangeAsync(applyFunc func(k string, v []byte)) {
 	}
 }
 
-func (db *underlineDB) forRangeChan(enChan chan *DbEntry) {
+func (db *UnderlineDB) forRangeChan(enChan chan *DbEntry) {
 	defer rescueutil.Recover(func(e any) {
 		fmt.Printf("ForRangeChan Error: %v\n", e)
 	})
