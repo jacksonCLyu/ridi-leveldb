@@ -5,18 +5,18 @@ import (
 	"github.com/syndtr/goleveldb/leveldb/opt"
 )
 
-// underlineDB struct of leveldb.underlineDB
-type underlineDB struct {
+// UnderlineDB struct of leveldb.UnderlineDB
+type UnderlineDB struct {
 	background *leveldb.DB
 }
 
 // Create a new local db if none exists.
 // Otherwise, open the existing db
-type newDB func(path string, dbName string, options *opt.Options) (*underlineDB, error)
+type newDB func(path string, dbName string, options *opt.Options) (*UnderlineDB, error)
 
 // cacheResult cache result of local db
 type cacheResult struct {
-	underlineDB *underlineDB
+	underlineDB *UnderlineDB
 	ready       chan struct{}
 }
 
@@ -25,7 +25,7 @@ type dbRequest struct {
 	Path   string
 	DbName string
 	Opts   *opt.Options
-	DbChan chan *underlineDB
+	DbChan chan *UnderlineDB
 }
 
 // dbCache leveldb cache
