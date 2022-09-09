@@ -10,5 +10,6 @@ require (
 
 require (
 	github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db // indirect
+	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	golang.org/x/text v0.3.7 // indirect
 )
