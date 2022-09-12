@@ -9,7 +9,7 @@ import (
 
 type GobCodec[K any, V any] struct{}
 
-func NewGobCode[K any, V any]() *GobCodec[K, V] {
+func NewGobCodec[K any, V any]() *GobCodec[K, V] {
 	return &GobCodec[K, V]{}
 }
 

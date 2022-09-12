@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/jacksonCLyu/ridi-leveldb/leveldbx/codec"
-	"github.com/jacksonCLyu/ridi-leveldb/leveldbx/codec/gobc"
+	"github.com/jacksonCLyu/ridi-leveldb/leveldbx/codec/jsonc"
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/opt"
 	"github.com/syndtr/goleveldb/leveldb/util"
@@ -34,7 +34,7 @@ func OpenDB[K any, V any](name string, opts ...Option) (*DB[K, V], error) {
 	}
 	return &DB[K, V]{
 		underlineDB: ldb,
-		codec:       gobc.NewGobCode[K, V](),
+		codec:       jsonc.NewJSONCodec[K, V](),
 	}, nil
 }
 
