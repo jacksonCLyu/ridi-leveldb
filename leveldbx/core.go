@@ -24,8 +24,8 @@ type DB[K any, V any] struct {
 //	leveldbx.OpenDB("foo", leveldbx.WithLevelDBOpts(&opt.Options{Filter: filter.NewBloomFilter(10),}))
 func OpenDB[K any, V any](name string, opts ...Option) (*DB[K, V], error) {
 	options := DefaultOptions()
-	for _, opt := range opts {
-		opt.apply(options)
+	for _, leveldbOpt := range opts {
+		leveldbOpt.apply(options)
 	}
 	file := filepath.Join(options.path, name)
 	ldb, err := leveldb.OpenFile(file, options.ldbOpts)
@@ -48,7 +48,7 @@ func (db *DB[K, V]) SetCodec(codec codec.Lcodec[K, V]) {
 	db.codec = codec
 }
 
-// Get get key from leveldb
+// Get key from leveldb
 func (db *DB[K, V]) Get(key K) (v V, err error) {
 	var k []byte
 	k, err = db.codec.EncodeKey(key)
@@ -80,7 +80,7 @@ func (db *DB[K, V]) GetWithReadOpts(key K, readOpts *opt.ReadOptions) (v V, err 
 	return
 }
 
-// Put put key value pair to leveldb
+// Put key value pair to leveldb
 func (db *DB[K, V]) Put(key K, val V) error {
 	k, err := db.codec.EncodeKey(key)
 	if err != nil {
@@ -93,8 +93,8 @@ func (db *DB[K, V]) Put(key K, val V) error {
 	return db.underlineDB.Put(k, v, &opt.WriteOptions{})
 }
 
-// PutWithWiteOpts put key value pair to leveldb with write options
-func (db *DB[K, V]) PutWithWiteOpts(key K, val V, wo *opt.WriteOptions) error {
+// PutWithWriteOpts put key value pair to leveldb with write options
+func (db *DB[K, V]) PutWithWriteOpts(key K, val V, wo *opt.WriteOptions) error {
 	k, err := db.codec.EncodeKey(key)
 	if err != nil {
 		return err
@@ -171,8 +171,8 @@ func (db *DB[K, V]) Seek(startKey K, consumer func(key K, val V)) error {
 	return it.Error()
 }
 
-// ForRangeWithOpts for range with util.Range and options
-// util.Range can be:
+// ForRangeWithOpts for range with *util.Range and options
+// *util.Range can be:
 //
 //	&util.Range{Start: []byte("foo"), Limit: []byte("xoo")}
 //
