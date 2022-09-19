@@ -23,8 +23,8 @@ func (c *GobCodec[K, V]) EncodeVal(data V) (v []byte, err error) {
 		return
 	}
 	// 解决 leveldb: not found 问题，原因：buf.Bytes() 返回内存强关联 pool.Buffer 的底层切片
-	v = make([]byte, 0)
-	v = append(v, buf.Bytes()...)
+	v = make([]byte, buf.Len())
+	copy(v, buf.Bytes())
 	return
 }
 
@@ -48,8 +48,8 @@ func (c *GobCodec[K, V]) EncodeKey(data K) (k []byte, err error) {
 		return
 	}
 	// 解决 leveldb: not found 问题，原因：buf.Bytes() 返回内存强关联 pool.Buffer 的底层切片
-	k = make([]byte, 0)
-	k = append(k, buf.Bytes()...)
+	k = make([]byte, buf.Len())
+	copy(k, buf.Bytes())
 	return
 }
 
