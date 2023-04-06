@@ -13,7 +13,7 @@ import (
 
 type DB[K any, V any] struct {
 	underlineDB *leveldb.DB
-	codec       codec.Lcodec[K, V]
+	codec       codec.LCodec[K, V]
 }
 
 // OpenDB open a leveldb with the given name and opts
@@ -44,7 +44,7 @@ func (db *DB[K, V]) Close() error {
 }
 
 // SetCodec set leveldb codec
-func (db *DB[K, V]) SetCodec(codec codec.Lcodec[K, V]) {
+func (db *DB[K, V]) SetCodec(codec codec.LCodec[K, V]) {
 	db.codec = codec
 }
 
@@ -104,6 +104,22 @@ func (db *DB[K, V]) PutWithWriteOpts(key K, val V, wo *opt.WriteOptions) error {
 		return err
 	}
 	return db.underlineDB.Put(k, v, wo)
+}
+
+func (db *DB[K, V]) EncodeKey(k K) ([]byte, error) {
+	return db.codec.EncodeKey(k)
+}
+
+func (db *DB[K, V]) EncodeVal(v V) ([]byte, error) {
+	return db.codec.EncodeVal(v)
+}
+
+func (db *DB[K, V]) DecodeKey(data []byte) (K, error) {
+	return db.codec.DecodeKey(data)
+}
+
+func (db *DB[K, V]) DecodeVal(data []byte) (V, error) {
+	return db.codec.DecodeVal(data)
 }
 
 func (db *DB[K, V]) PutBatch(batch *leveldb.Batch) error {
