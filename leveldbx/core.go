@@ -209,3 +209,14 @@ func (db *DB[K, V]) ForRangeWithOpts(slice *util.Range, ro *opt.ReadOptions, con
 	it.Release()
 	return it.Error()
 }
+
+// Size returns db size
+func (db *DB[K, V]) Size() int {
+	size := 0
+	if err := db.ForRange(func(_ K, _ V) {
+		size++
+	}); err != nil {
+		return size
+	}
+	return size
+}
