@@ -1,7 +1,7 @@
 package codec
 
-// LCodec leveldb codec interface
-type LCodec[K any, V any] interface {
+// LdbCodec leveldb codec interface
+type LdbCodec[K any, V any] interface {
 	// EncodeKey encode key
 	EncodeKey(data K) (k []byte, err error)
 	// DecodeKey decode key

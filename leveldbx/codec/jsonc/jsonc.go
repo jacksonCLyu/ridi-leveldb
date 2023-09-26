@@ -13,7 +13,7 @@ func NewJSONCodec[K any, V any]() *JSONCodec[K, V] {
 	return &JSONCodec[K, V]{}
 }
 
-var _ codec.LCodec[any, any] = (*JSONCodec[any, any])(nil)
+var _ codec.LdbCodec[any, any] = (*JSONCodec[any, any])(nil)
 
 // EncodeVal json encode value
 func (c *JSONCodec[K, V]) EncodeVal(data V) (v []byte, err error) {

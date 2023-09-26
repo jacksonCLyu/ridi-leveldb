@@ -17,10 +17,12 @@ func GetBufferFromPool() *bytes.Buffer {
 }
 
 // PutBuffer2Pool return buffer after reset
-func PutBuffer2Pool(buf *bytes.Buffer) {
-	if buf == nil {
-		return
+func PutBuffer2Pool(buf *bytes.Buffer) func() {
+	return func() {
+		if buf == nil {
+			return
+		}
+		buf.Reset()
+		_bufferPool.Put(buf)
 	}
-	buf.Reset()
-	_bufferPool.Put(buf)
 }

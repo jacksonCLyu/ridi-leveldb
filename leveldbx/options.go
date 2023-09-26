@@ -8,25 +8,25 @@ import (
 )
 
 type Option interface {
-	apply(opts *options)
+	apply(opts *LdbOptions)
 }
 
-type ApplyFunc func(opts *options)
+type ApplyFunc func(opts *LdbOptions)
 
-func (f ApplyFunc) apply(opts *options) {
+func (f ApplyFunc) apply(opts *LdbOptions) {
 	f(opts)
 }
 
-// options private options
-type options struct {
+// LdbOptions private LdbOptions
+type LdbOptions struct {
 	// path dir path of db files
 	path string
-	// ldbOpts leveldb options
+	// ldbOpts leveldb LdbOptions
 	ldbOpts *opt.Options
 }
 
-func DefaultOptions() *options {
-	return &options{
+func DefaultOptions() *LdbOptions {
+	return &LdbOptions{
 		path:    filepath.Join(env.AppRootPath(), DbRelativePath),
 		ldbOpts: &opt.Options{},
 	}
@@ -34,14 +34,14 @@ func DefaultOptions() *options {
 
 // WithPath set dir path of db files
 func WithPath(path string) Option {
-	return ApplyFunc(func(opts *options) {
+	return ApplyFunc(func(opts *LdbOptions) {
 		opts.path = path
 	})
 }
 
 // WithLevelDBOpts set leveldb opt.Options
 func WithLevelDBOpts(levelDBOpts *opt.Options) Option {
-	return ApplyFunc(func(opts *options) {
+	return ApplyFunc(func(opts *LdbOptions) {
 		opts.ldbOpts = levelDBOpts
 	})
 }

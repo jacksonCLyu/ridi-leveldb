@@ -2,10 +2,10 @@ package leveldbx
 
 import (
 	"errors"
+	"github.com/jacksonCLyu/ridi-leveldb/leveldbx/codec/sonicc"
 	"path/filepath"
 
 	"github.com/jacksonCLyu/ridi-leveldb/leveldbx/codec"
-	"github.com/jacksonCLyu/ridi-leveldb/leveldbx/codec/jsonc"
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/opt"
 	"github.com/syndtr/goleveldb/leveldb/util"
@@ -13,7 +13,7 @@ import (
 
 type DB[K any, V any] struct {
 	underlineDB *leveldb.DB
-	codec       codec.LCodec[K, V]
+	codec       codec.LdbCodec[K, V]
 }
 
 // OpenDB open a leveldb with the given name and opts
@@ -34,17 +34,19 @@ func OpenDB[K any, V any](name string, opts ...Option) (*DB[K, V], error) {
 	}
 	return &DB[K, V]{
 		underlineDB: ldb,
-		codec:       jsonc.NewJSONCodec[K, V](),
+		codec:       sonicc.NewJSONCodec[K, V](),
 	}, nil
 }
 
 // Close to close level db
-func (db *DB[K, V]) Close() error {
-	return db.underlineDB.Close()
+func (db *DB[K, V]) Close() func() error {
+	return func() error {
+		return db.underlineDB.Close()
+	}
 }
 
 // SetCodec set leveldb codec
-func (db *DB[K, V]) SetCodec(codec codec.LCodec[K, V]) {
+func (db *DB[K, V]) SetCodec(codec codec.LdbCodec[K, V]) {
 	db.codec = codec
 }
 
@@ -64,7 +66,7 @@ func (db *DB[K, V]) Get(key K) (v V, err error) {
 	return
 }
 
-// GetWithReadOpts get key from leveldb with read options
+// GetWithReadOpts get key from leveldb with read LdbOptions
 func (db *DB[K, V]) GetWithReadOpts(key K, readOpts *opt.ReadOptions) (v V, err error) {
 	var k []byte
 	k, err = db.codec.EncodeKey(key)
@@ -93,7 +95,7 @@ func (db *DB[K, V]) Put(key K, val V) error {
 	return db.underlineDB.Put(k, v, &opt.WriteOptions{})
 }
 
-// PutWithWriteOpts put key value pair to leveldb with write options
+// PutWithWriteOpts put key value pair to leveldb with write LdbOptions
 func (db *DB[K, V]) PutWithWriteOpts(key K, val V, wo *opt.WriteOptions) error {
 	k, err := db.codec.EncodeKey(key)
 	if err != nil {
@@ -187,7 +189,7 @@ func (db *DB[K, V]) Seek(startKey K, consumer func(key K, val V)) error {
 	return it.Error()
 }
 
-// ForRangeWithOpts for range with *util.Range and options
+// ForRangeWithOpts for range with *util.Range and LdbOptions
 // *util.Range can be:
 //
 //	&util.Range{Start: []byte("foo"), Limit: []byte("xoo")}

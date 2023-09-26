@@ -12,7 +12,7 @@ func NewGobCodec[K any, V any]() *GobCodec[K, V] {
 	return &GobCodec[K, V]{}
 }
 
-var _ codec.LCodec[any, any] = (*GobCodec[any, any])(nil)
+var _ codec.LdbCodec[any, any] = (*GobCodec[any, any])(nil)
 
 // EncodeVal gob encode value
 func (c *GobCodec[K, V]) EncodeVal(data V) (v []byte, err error) {

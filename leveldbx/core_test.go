@@ -8,12 +8,13 @@ import (
 
 func TestDB_OpenDB(t *testing.T) {
 	db, err := OpenDB[string, string]("test")
-	defer func(db *DB[string, string]) {
-		if err := db.Close(); err != nil {
-			t.Errorf("dbClose error: %+v", err)
-		}
-		t.Logf("db: [%s] closed", "test")
-	}(db)
+	defer db.Close()
+	//defer func(db *DB[string, string]) {
+	//	if err := db.Close(); err != nil {
+	//		t.Errorf("dbClose error: %+v", err)
+	//	}
+	//	t.Logf("db: [%s] closed", "test")
+	//}(db)
 	if err != nil {
 		t.Errorf("OpenDB() failed, err: %+v", err)
 	}
@@ -33,12 +34,13 @@ func TestDB_OpenDB(t *testing.T) {
 
 func TestDB_SetCodec(t *testing.T) {
 	db, err := OpenDB[string, string]("test")
-	defer func(db *DB[string, string]) {
-		if err := db.Close(); err != nil {
-			t.Errorf("dbClose error: %+v", err)
-		}
-		t.Logf("db: [%s] closed", "test")
-	}(db)
+	defer db.Close()
+	//defer func(db *DB[string, string]) {
+	//	if err := db.Close(); err != nil {
+	//		t.Errorf("dbClose error: %+v", err)
+	//	}
+	//	t.Logf("db: [%s] closed", "test")
+	//}(db)
 	if err != nil {
 		t.Errorf("OpenDB() failed, err: %+v", err)
 	}
@@ -58,12 +60,13 @@ func TestDB_SetCodec(t *testing.T) {
 func TestDB_Size(t *testing.T) {
 	name1 := "test1"
 	db1, err := OpenDB[any, any](name1)
-	defer func(db1 *DB[any, any]) {
-		err := db1.Close()
-		if err != nil {
-
-		}
-	}(db1)
+	defer db1.Close()
+	//defer func(db1 *DB[any, any]) {
+	//	err := db1.Close()
+	//	if err != nil {
+	//
+	//	}
+	//}(db1)
 	if err != nil {
 		t.Errorf("OpenDB() failed, err: %+v", err)
 	}
@@ -71,12 +74,13 @@ func TestDB_Size(t *testing.T) {
 
 	name2 := "test2"
 	db2, err := OpenDB[any, any](name2)
-	defer func(db2 *DB[any, any]) {
-		err := db2.Close()
-		if err != nil {
-
-		}
-	}(db2)
+	defer db2.Close()
+	//defer func(db2 *DB[any, any]) {
+	//	err := db2.Close()
+	//	if err != nil {
+	//
+	//	}
+	//}(db2)
 	if err != nil {
 		t.Errorf("OpenDB() failed, err: %+v", err)
 	}
@@ -85,12 +89,13 @@ func TestDB_Size(t *testing.T) {
 
 	name3 := "test3"
 	db3, err := OpenDB[any, any](name3)
-	defer func(db3 *DB[any, any]) {
-		err := db3.Close()
-		if err != nil {
-
-		}
-	}(db3)
+	defer db3.Close()
+	//defer func(db3 *DB[any, any]) {
+	//	err := db3.Close()
+	//	if err != nil {
+	//
+	//	}
+	//}(db3)
 	if err != nil {
 		t.Errorf("OpenDB() failed, err: %+v", err)
 	}
