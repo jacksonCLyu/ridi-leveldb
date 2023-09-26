@@ -2,6 +2,7 @@ package leveldbx
 
 import (
 	"github.com/jacksonCLyu/ridi-leveldb/leveldbx/codec/gobc"
+	"github.com/stretchr/testify/assert"
 	"strconv"
 	"testing"
 )
@@ -30,6 +31,7 @@ func TestDB_OpenDB(t *testing.T) {
 	} else {
 		t.Logf("Get() success, val: %s", val)
 	}
+	assert.EqualValues(t, val, "abc")
 }
 
 func TestDB_SetCodec(t *testing.T) {
@@ -55,6 +57,7 @@ func TestDB_SetCodec(t *testing.T) {
 	} else {
 		t.Logf("Get() success, val: %s", val)
 	}
+	assert.EqualValues(t, val, "abc")
 }
 
 func TestDB_Size(t *testing.T) {
