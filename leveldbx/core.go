@@ -39,10 +39,8 @@ func OpenDB[K any, V any](name string, opts ...Option) (*DB[K, V], error) {
 }
 
 // Close to close level db
-func (db *DB[K, V]) Close() func() error {
-	return func() error {
-		return db.underlineDB.Close()
-	}
+func (db *DB[K, V]) Close() error {
+	return db.underlineDB.Close()
 }
 
 // SetCodec set leveldb codec

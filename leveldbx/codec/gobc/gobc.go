@@ -17,7 +17,7 @@ var _ codec.LdbCodec[any, any] = (*GobCodec[any, any])(nil)
 // EncodeVal gob encode value
 func (c *GobCodec[K, V]) EncodeVal(data V) (v []byte, err error) {
 	buf := pool.GetBufferFromPool()
-	defer pool.PutBuffer2Pool(buf)
+	defer pool.PutBuffer2Pool(buf)()
 	enc := gob.NewEncoder(buf)
 	if err = enc.Encode(data); err != nil {
 		return
@@ -31,7 +31,7 @@ func (c *GobCodec[K, V]) EncodeVal(data V) (v []byte, err error) {
 // DecodeVal gob decode value
 func (c *GobCodec[K, V]) DecodeVal(data []byte) (v V, err error) {
 	buf := pool.GetBufferFromPool()
-	defer pool.PutBuffer2Pool(buf)
+	defer pool.PutBuffer2Pool(buf)()
 	if _, err = buf.Write(data); err != nil {
 		return
 	}
@@ -42,7 +42,7 @@ func (c *GobCodec[K, V]) DecodeVal(data []byte) (v V, err error) {
 
 func (c *GobCodec[K, V]) EncodeKey(data K) (k []byte, err error) {
 	buf := pool.GetBufferFromPool()
-	defer pool.PutBuffer2Pool(buf)
+	defer pool.PutBuffer2Pool(buf)()
 	enc := gob.NewEncoder(buf)
 	if err = enc.Encode(data); err != nil {
 		return
@@ -56,7 +56,7 @@ func (c *GobCodec[K, V]) EncodeKey(data K) (k []byte, err error) {
 // DecodeKey gob decode key
 func (c *GobCodec[K, V]) DecodeKey(data []byte) (k K, err error) {
 	buf := pool.GetBufferFromPool()
-	defer pool.PutBuffer2Pool(buf)
+	defer pool.PutBuffer2Pool(buf)()
 	if _, err = buf.Write(data); err != nil {
 		return
 	}
