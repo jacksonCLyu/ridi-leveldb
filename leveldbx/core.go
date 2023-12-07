@@ -2,7 +2,7 @@ package leveldbx
 
 import (
 	"errors"
-	"github.com/jacksonCLyu/ridi-leveldb/leveldbx/codec/sonicc"
+	"github.com/jacksonCLyu/ridi-leveldb/leveldbx/codec/jsonc"
 	"path/filepath"
 
 	"github.com/jacksonCLyu/ridi-leveldb/leveldbx/codec"
@@ -34,7 +34,7 @@ func OpenDB[K any, V any](name string, opts ...Option) (*DB[K, V], error) {
 	}
 	return &DB[K, V]{
 		underlineDB: ldb,
-		codec:       sonicc.NewJSONCodec[K, V](),
+		codec:       jsonc.NewJSONCodec[K, V](),
 	}, nil
 }
 
