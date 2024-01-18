@@ -58,6 +58,34 @@ func TestDB_SetCodec(t *testing.T) {
 	assert.EqualValues(t, val, "abc")
 }
 
+func TestForRange(t *testing.T) {
+	tests := []struct {
+		name string
+	}{
+		{"test1"},
+		{"test2"},
+		{"test3"},
+		{"test4"},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			count, _ := strconv.Atoi(test.name[len(test.name)-1:])
+			if ldb, err := OpenDB[string, string](test.name); err != nil {
+				ldb.CloseQuietly()
+			} else {
+				for i := 0; i < count; i++ {
+					itoa := strconv.Itoa(i)
+					ldb.Put(itoa, itoa)
+				}
+				ldb.ForRange(func(key string, val string) {
+					t.Logf("ForRange: %s: %s", key, val)
+				})
+				ldb.CloseQuietly()
+			}
+		})
+	}
+}
+
 func TestDB_Size(t *testing.T) {
 	name1 := "test1"
 	db1, err := OpenDB[any, any](name1)

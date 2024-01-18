@@ -43,6 +43,11 @@ func (db *DB[K, V]) Close() error {
 	return db.underlineDB.Close()
 }
 
+// CloseQuietly to close level db ignore error
+func (db *DB[K, V]) CloseQuietly() {
+	_ = db.underlineDB.Close()
+}
+
 // SetCodec set leveldb codec
 func (db *DB[K, V]) SetCodec(codec codec.LdbCodec[K, V]) {
 	db.codec = codec
